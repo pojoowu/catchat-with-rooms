@@ -1,9 +1,11 @@
 //handling dom elements
-let canvas, socket, buttonSend, buttonCreateRoom, buttonLeaveRoom, inputMsg, inputRoomName;
+let canvas, socket, buttonSend, buttonCreateRoom, buttonLeaveRoom, inputMsg, inputRoomName,
+  divHome, divRoom;
 let w = 40;
 let memberNb = 0,
   allMessageNb = 0;
-let divHome, divRoom, rooms = [], currentRoom, roomsName = [];
+let rooms = [],
+  currentRoom, roomsName = [];
 
 function setup() {
   canvas = createCanvas(windowWidth, w);
@@ -27,24 +29,22 @@ function setup() {
   socket.on("deleteRoom", deleteRoomList);
 }
 //show an error msg when the name of the room has already been used
-function errorNameUsed(data){
+function errorNameUsed(data) {
   let p = createP(data);
   p.parent(".homepage");
 }
-//create a room when receive a confirm of the server
-function createUserRoom(data){
-  inputRoomName.value('');
-  divHome.hide();
-  divRoom.show();
-  currentRoom = data;
-}
+
 //delete a room when there are no one in it
-function deleteRoomList(data){
+function deleteRoomList(data) {
+  let n = roomsName.indexOf(data);
+  roomsName.splice(n, 1);
+  rooms.splice(n, 1);
+  console.log(rooms);
   let room = select(`#${data}`);
   room.remove();
 }
 //add a room when someone creates a new one
-function addRoomList(data){
+function addRoomList(data) {
   let room = createElement('li', data);
   room.class('rooms');
   room.id(data);
@@ -58,7 +58,7 @@ function changeMemberNb(data) {
 }
 //show the number of messages sent altogether
 function changeMessageNb(data) {
-  allMessageNb = data;
+  //allMessageNb = data;
 }
 //show the welcome msg of the room
 function addWelcome(data) {
@@ -69,6 +69,7 @@ function addMsg(msg) {
   let p = createP(msg);
   p.class('chat-content');
   p.parent('#chatLog');
+  allMessageNb++;
 }
 //send a msg to the server
 function sendMsg() {
@@ -95,13 +96,22 @@ function keyPressed() {
 //send a request to server to create a room
 function requestcreateRoom() {
   if (inputRoomName.value()) {
-    socket.emit("createRoom", inputRoomName.value());
+    socket.emit("createRoomRequest", inputRoomName.value());
+    currentRoom = inputRoomName.value();
   }
+}
+//create a room when receive a confirm of the server
+function createUserRoom(data) {
+  inputRoomName.value('');
+  divHome.hide();
+  divRoom.show();
+  currentRoom = data;
 }
 //send a msg to server to quit a room
 function leaveUserRoom() {
   divHome.show();
   divRoom.hide();
+  allMessageNb = 0;
   socket.emit("leaveRoom", currentRoom);
 }
 //send a msg to server to join a room
@@ -114,8 +124,10 @@ function joinUserRoom(name) {
 
 function draw() {
   background(150);
-  for(let i = 0; i < rooms.length; i++){
-    rooms[i].mousePressed(function() {joinUserRoom(roomsName[i]);});
+  for (let i = 0; i < rooms.length; i++) {
+    rooms[i].mousePressed(function() {
+      joinUserRoom(roomsName[i]);
+    });
   };
   buttonSend.mousePressed(sendMsg);
   buttonCreateRoom.mousePressed(requestcreateRoom);

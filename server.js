@@ -13,6 +13,7 @@ let allMessages = [],
   messageNb = 0;
 let rooms = new Set();
 let sockets = new Set();
+let d = new Date();
 
 io.on('connection', newConnection);
 
@@ -26,7 +27,7 @@ function newConnection(socket) {
   }
   console.log("Welcome: " + socket.id);
 
-  socket.on("createRoom", createRoom);
+  socket.on("createRoomRequest", createRoom);
   socket.on("joinRoom", joinRoom);
   socket.on("leaveRoom", leaveRoom);
   socket.on("sendingMsg", broadcastMsg);
@@ -35,12 +36,12 @@ function newConnection(socket) {
   function leaveRoom(data) {
     socket.leave(data);
     let someStillInRoom = false;
-    for(socket of sockets){
-      if(socket.rooms.has(data)){
+    for (user of sockets) {
+      if (user.rooms.has(data)) {
         someStillInRoom = true;
       }
     }
-    if(!someStillInRoom){
+    if (!someStillInRoom) {
       rooms.delete(data);
       io.emit("deleteRoom", data);
     }
@@ -48,18 +49,18 @@ function newConnection(socket) {
   }
 
   function joinRoom(data) {
-    console.log(data);
     socket.join(data);
-    socket.emit("welcome", `Welcome to the ${data} room!`);
+    socket.emit("welcome", `Welcome to the ${data} room! at ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`);
   }
 
   function createRoom(data) {
     if (!rooms.has(data)) {
+      console.log(socket.id + ', ' + data);
       rooms.add(data);
       socket.join(data);
       io.emit("createRoom", data);
       socket.emit("roomCreated", data);
-      socket.emit("welcome", `Welcome to the ${data} room!`);
+      socket.emit("welcome", `Welcome to the ${data} room! at ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`);
     } else {
       socket.emit("roomNameUsed", `${data} has already been used.`)
     }

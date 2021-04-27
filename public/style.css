@@ -48,6 +48,7 @@ button{
 .roomList{
   margin: 5px;
   font-size: 32px;
+  width: 50%;
 }
 
 .roominfo{
