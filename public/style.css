@@ -1,5 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
 *{
   margin: 0;
+}
+
+body{
+  background-color: #DDD;
 }
 
 .logo{
@@ -19,7 +25,6 @@ input{
   font-size: 20px;
   width: 99.2%;
   padding: 5px;
-  border-bottom: solid;
 }
 
 #chatLog{
@@ -39,6 +44,8 @@ button{
 
 .chatting{
   display: none;
+  width: 80%;
+  margin: 0 auto;
 }
 
 #leaveRoom{
@@ -64,11 +71,33 @@ li:hover{
   font-size: 14px;
 }
 
-.server{
+.para-server{
   text-align: center;
+  border-bottom: solid;
+}
+
+.para-self, .para-someone-else{
+  margin-top: 5px;
+  font-size: 22px;
+}
+
+.para-self{
+  text-align: right;
 }
 
 .self{
-  text-align: right;
-  margin-right: 10px;
+  background-color: #51B7F2;
+}
+
+.someone-else{
+  color: white;
+  background-color: #234BD1;
+}
+
+.message-content{
+  padding: 5px;
+  margin: 200px;
+  border-color: #51B7F2;
+  border-radius: 5px;
+  font-family: 'Poppins';
 }

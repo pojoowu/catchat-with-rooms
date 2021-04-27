@@ -9,7 +9,7 @@ let rooms = [],
 
 
 function setup() {
-  canvas = createCanvas(windowWidth, w);
+  canvas = createCanvas(windowWidth * 4 / 5, w);
   divHome = select('.homepage');
   divRoom = select('.chatting');
   divRoom.hide();
@@ -83,10 +83,11 @@ function showComingMsg(data) {
 //add the message to the chatLog
 function addMsg(msg, source) {
   let d = new Date();
-  let p = createP(`${msg} <span class = "message-time">
+  let p = createP(`<span class = "message-content ${source}">${msg}</span>
+  <span class = "message-time">
     ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} </span>`);
   p.class('chat-content');
-  p.addClass(source);
+  p.addClass(`para-${source}`);
   p.parent('#chatLog');
   allMessageNb++;
 }
@@ -139,5 +140,5 @@ function draw() {
   rectMode(CORNER);
   textSize(16);
   text(`There are currently ${memberNb} people in the chat`, 10, 25);
-  text(`There are ${allMessageNb} messages in the chat`, windowWidth - 250, 25);
+  text(`There are ${allMessageNb} messages in the chat`, width - 250, 25);
 }
