@@ -62,16 +62,7 @@ function changeMessageNb(data) {
 }
 //show the welcome msg of the room
 function addWelcome(data) {
-  addMsg(data);
-}
-//add the message to the chatLog
-function addMsg(msg) {
-  let d = new Date();
-  let p = createP(`${msg} <span class = "message-time">
-    ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} </span>`);
-  p.class('chat-content');
-  p.parent('#chatLog');
-  allMessageNb++;
+  addMsg(data, "server");
 }
 //send a msg to the server
 function sendMsg() {
@@ -81,13 +72,23 @@ function sendMsg() {
       msg: inputMsg.value()
     };
     socket.emit("sendingMsg", data);
-    addMsg(inputMsg.value());
+    addMsg(inputMsg.value(), "self");
     inputMsg.value('');
   }
 }
 //receive the msg from the server sent by other users
 function showComingMsg(data) {
-  addMsg(data);
+  addMsg(data, "someone-else");
+}
+//add the message to the chatLog
+function addMsg(msg, source) {
+  let d = new Date();
+  let p = createP(`${msg} <span class = "message-time">
+    ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} </span>`);
+  p.class('chat-content');
+  p.addClass(source);
+  p.parent('#chatLog');
+  allMessageNb++;
 }
 //allow pressing enter to send a msg
 function keyPressed() {

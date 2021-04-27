@@ -63,3 +63,12 @@ li:hover{
   float: right;
   font-size: 14px;
 }
+
+.server{
+  text-align: center;
+}
+
+.self{
+  text-align: right;
+  margin-right: 10px;
+}
