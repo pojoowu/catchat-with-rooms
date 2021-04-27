@@ -74,6 +74,9 @@ function newConnection(socket) {
   }
 
   function reduceMember() {
+    for(name of rooms){
+      leaveRoom(name);
+    }
     memberNb--;
     console.log(socket.id + " is leaving");
     sockets.delete(socket);
