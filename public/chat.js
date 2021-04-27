@@ -7,6 +7,7 @@ let memberNb = 0,
 let rooms = [],
   currentRoom, roomsName = [];
 
+
 function setup() {
   canvas = createCanvas(windowWidth, w);
   divHome = select('.homepage');
@@ -33,7 +34,6 @@ function errorNameUsed(data) {
   let p = createP(data);
   p.parent(".homepage");
 }
-
 //delete a room when there are no one in it
 function deleteRoomList(data) {
   let n = roomsName.indexOf(data);
@@ -66,7 +66,9 @@ function addWelcome(data) {
 }
 //add the message to the chatLog
 function addMsg(msg) {
-  let p = createP(msg);
+  let d = new Date();
+  let p = createP(`${msg} <span class = "message-time">
+    ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} </span>`);
   p.class('chat-content');
   p.parent('#chatLog');
   allMessageNb++;

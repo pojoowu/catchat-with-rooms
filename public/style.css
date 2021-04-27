@@ -58,3 +58,8 @@ button{
 li:hover{
   background-color: #FFB266;
 }
+
+.message-time{
+  float: right;
+  font-size: 14px;
+}

@@ -50,7 +50,7 @@ function newConnection(socket) {
 
   function joinRoom(data) {
     socket.join(data);
-    socket.emit("welcome", `Welcome to the ${data} room! at ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`);
+    socket.emit("welcome", `Welcome to the ${data} room! `);
   }
 
   function createRoom(data) {
@@ -60,7 +60,7 @@ function newConnection(socket) {
       socket.join(data);
       io.emit("createRoom", data);
       socket.emit("roomCreated", data);
-      socket.emit("welcome", `Welcome to the ${data} room! at ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`);
+      socket.emit("welcome", `Welcome to the ${data} room!`);
     } else {
       socket.emit("roomNameUsed", `${data} has already been used.`)
     }
