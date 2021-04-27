@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en" dir="ltr">
 
 <head>
@@ -9,9 +9,27 @@
 
 <body>
   <header class="logo"><span>C</span>at<span>H</span>atch<span>AT</span></header>
-  <p id="canvasP"></p>
-  <input type="text" size = "40" id = "sendText">
-  <button type="button" id = "sendButton">send</button>
+  <div class="homepage">
+    <div class="roominfo">
+      <input type="text" size = "30" id="roomName">
+      <button type="button" name="button" id="createRoom">Create Room</button>
+    </div>
+
+    <div class="roomList">
+      <p>Active Rooms</p>
+      <ul id = 'activeRooms'>
+      </ul>
+    </div>
+  </div>
+  <div class="chatting">
+    <p id="canvasP"></p>
+    <div id="chatLog"></div>
+    <div class="input-place">
+      <input type="text" size="40" id="sendText">
+      <button type="button" id="sendButton">send</button>
+      <button type="button" id="leaveRoom">Leave Room</button>
+    </div>
+  </div>
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="chat.js"></script>
   <script type="text/javascript" src="p5.js"></script>
