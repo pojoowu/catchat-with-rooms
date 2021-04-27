@@ -53,16 +53,18 @@ function newConnection(socket) {
     socket.emit("welcome", `Welcome to the ${data} room! `);
   }
 
-  function createRoom(data) {
+  function createRoom(data, callback) {
     if (!rooms.has(data)) {
       console.log(socket.id + ', ' + data);
       rooms.add(data);
       socket.join(data);
       io.emit("createRoom", data);
-      socket.emit("roomCreated", data);
+    //  socket.emit("roomCreated", data);
       socket.emit("welcome", `Welcome to the ${data} room!`);
+      callback(true);
     } else {
-      socket.emit("roomNameUsed", `${data} has already been used.`)
+      //socket.emit("roomNameUsed", `${data} has already been used.`)
+      callback(false);
     }
   }
 

@@ -1,6 +1,7 @@
 //handling dom elements
 let canvas, socket, buttonSend, buttonCreateRoom, buttonLeaveRoom, inputMsg, inputRoomName,
   divHome, divRoom;
+//message height
 let w = 40;
 let memberNb = 0,
   allMessageNb = 0;
@@ -25,13 +26,11 @@ function setup() {
   socket.on("someoneEnter", changeMemberNb);
   socket.on("allMsgNb", changeMessageNb);
   socket.on("createRoom", addRoomList);
-  socket.on("roomNameUsed", errorNameUsed);
-  socket.on("roomCreated", createUserRoom);
   socket.on("deleteRoom", deleteRoomList);
 }
 //show an error msg when the name of the room has already been used
 function errorNameUsed(data) {
-  let p = createP(data);
+  let p = createP(`${data} has already been used!!`);
   p.parent(".homepage");
 }
 //delete a room when there are no one in it
@@ -98,9 +97,15 @@ function keyPressed() {
   }
 }
 //send a request to server to create a room
-function requestcreateRoom() {
+function requestCreateRoom() {
   if (inputRoomName.value()) {
-    socket.emit("createRoomRequest", inputRoomName.value());
+    socket.emit("createRoomRequest", inputRoomName.value(), (response) => {
+      if(!response){
+        errorNameUsed(inputRoomName.value());
+      } else{
+        createUserRoom(inputRoomName.value());
+      }
+    });
     currentRoom = inputRoomName.value();
   }
 }
@@ -134,7 +139,7 @@ function draw() {
     });
   };
   buttonSend.mousePressed(sendMsg);
-  buttonCreateRoom.mousePressed(requestcreateRoom);
+  buttonCreateRoom.mousePressed(requestCreateRoom);
   buttonLeaveRoom.mousePressed(leaveUserRoom);
   fill(0);
   rectMode(CORNER);
